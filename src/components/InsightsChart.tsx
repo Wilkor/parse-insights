@@ -53,7 +53,7 @@ const InsightsChart: React.FC<InsightsChartProps> = ({ campaignId, pageAccessTok
 
     setLoading(true); // Start loading
     try {
-      const apiKey = ''; // Utilize variáveis de ambiente para armazenar chaves de API
+      const apiKey = process.env.REACT_APP_API_KEY; // Utilize variáveis de ambiente para armazenar chaves de API
       const url = 'https://api.openai.com/v1/completions';
 
       const response = await fetch(url, {
