@@ -81,7 +81,7 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
                         'auth_type=rerequest&' +
                         'scope=read_insights,catalog_management,ads_management,ads_read,business_management';
 
-        window.open(authUrl, '_self'); // Abre a URL no mesmo tab
+        window.open(authUrl, '_blank'); // Abre a URL no mesmo tab
     };
 
     return (
