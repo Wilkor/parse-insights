@@ -72,7 +72,7 @@ const CampaignsList: React.FC<CampaignsListProps> = ({ onSelect, pageAccessToken
 
   return (
     <div style={{ padding: '16px', maxWidth: '800px', margin: '0 auto' }}>
-      <Typography variant="h6" gutterBottom>Select Campaign</Typography>
+      <Typography variant="h6" gutterBottom></Typography>
       {loading && <CircularProgress />}
       {error && <Alert severity="error">{error}</Alert>}
       {!loading && !error && (
