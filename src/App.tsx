@@ -3,7 +3,6 @@ import { Container, Grid, AppBar, Toolbar, Typography, Box, Button, CircularProg
 import CampaignsList from './components/CampaignsList';
 import InsightsChart from './components/InsightsChart';
 import logo from './image/logo_parse.png';
-import { getApplication } from "./api/applicationService";
 
 interface AppProps {
     eventCaller: string;
@@ -23,12 +22,7 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const application = await getApplication();
-            console.log(application);
-        };
-
-        fetchData();
+  
 
         // Load the Facebook SDK asynchronously
         (function(d: Document, s: string, id: string) {
