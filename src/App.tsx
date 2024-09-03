@@ -77,7 +77,7 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
                         'response_type=token&' +
                         'display=popup&' +
                         'client_id=1154848712403630&' +
-                        'redirect_uri=https://ccbe-2804-14c-183-97a8-2965-db08-8047-773.ngrok-free.app/&' +
+                        'redirect_uri=https://parse-insights-509f01aeb090.herokuapp.com/&' +
                         'auth_type=rerequest&' +
                         'scope=read_insights,catalog_management,ads_management,ads_read,business_management';
 
