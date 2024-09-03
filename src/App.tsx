@@ -22,10 +22,8 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-  
-
         // Load the Facebook SDK asynchronously
-        (function(d: Document, s: string, id: string) {
+        (function (d: Document, s: string, id: string) {
             var js: HTMLScriptElement = d.createElement(s) as HTMLScriptElement;
             var fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
@@ -68,14 +66,14 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
 
     const handleLogin = () => {
         const authUrl = 'https://www.facebook.com/v20.0/dialog/oauth?' +
-                        'response_type=token&' +
-                        'display=popup&' +
-                        'client_id=1154848712403630&' +
-                        'redirect_uri=https://parse-insights-509f01aeb090.herokuapp.com/&' +
-                        'auth_type=rerequest&' +
-                        'scope=read_insights,catalog_management,ads_management,ads_read,business_management';
+            'response_type=token&' +
+            'display=popup&' +
+            'client_id=1154848712403630&' +
+            'redirect_uri=https://parse-insights-509f01aeb090.herokuapp.com/&' +
+            'auth_type=rerequest&' +
+            'scope=read_insights,catalog_management,ads_management,ads_read,business_management';
 
-        window.open(authUrl, '_blank'); // Abre a URL no mesmo tab
+        window.open(authUrl, '_Self'); // Abre a URL no mesmo tab
     };
 
     return (
@@ -92,13 +90,10 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
                     <Typography variant="h6" component="div">
                         Insights
                     </Typography>
-                    <Button color="inherit" onClick={handleLogin}>
-                        Login com Facebook
-                    </Button>
                 </Toolbar>
             </AppBar>
 
-            <Container sx={{ mt: 1, ml: 0 }}>
+            <Container >
                 {loading ? (
                     <CircularProgress />
                 ) : (
@@ -112,9 +107,23 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
                             </Grid>
                         </Grid>
                     ) : (
-                        <Typography variant="h6" component="div">
-                            Por favor, faça login para acessar os dados.
-                        </Typography>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center', // Centraliza horizontalmente
+                                alignItems: 'center',    // Centraliza verticalmente
+                                height: '50vh'
+                            }}
+                        >
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                sx={{ marginTop: '16px', maxWidth: '300px' }} // Define um maxWidth para o botão
+                                onClick={handleLogin}
+                            >
+                                Entrar com Facebook
+                            </Button>
+                        </Box>
                     )
                 )}
             </Container>
