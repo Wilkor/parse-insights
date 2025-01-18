@@ -18,57 +18,55 @@ declare global {
 const App: React.FC<AppProps> = ({ eventCaller }) => {
     const [selectedCampaignId, setSelectedCampaignId] = useState<string | null>(null);
     const [pageAccessToken, setPageAccessToken] = useState<string | null>(() => {
-        return localStorage.getItem('pageAccessToken'); // Recupera o token do localStorage
+        return localStorage.getItem('pageAccessToken');
     });
-        const [profile, setProfile] = useState<any | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         // Load the Facebook SDK asynchronously
         (function (d: Document, s: string, id: string) {
-            var js: HTMLScriptElement = d.createElement(s) as HTMLScriptElement;
-            var fjs = d.getElementsByTagName(s)[0];
+            const js: HTMLScriptElement = d.createElement(s) as HTMLScriptElement;
+            const fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
             js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            js.src = 'https://connect.facebook.net/en_US/sdk.js';
             if (fjs.parentNode) {
                 fjs.parentNode.insertBefore(js, fjs);
             }
             js.onload = () => {
                 if (window.FB) {
                     window.FB.init({
-                        appId: '1154848712403630', // Replace with your Facebook App ID
+                        appId: '1154848712403630',
                         cookie: true,
                         xfbml: true,
-                        version: 'v20.0'
+                        version: 'v20.0',
                     });
                     window.FB.AppEvents.logPageView();
                 }
             };
-        }(document, 'script', 'facebook-jssdk'));
+        })(document, 'script', 'facebook-jssdk');
 
         // Extract access token from URL hash
         const extractTokenFromUrl = () => {
             const hash = window.location.hash;
             const params = new URLSearchParams(hash.replace('#', '?'));
             const token = params.get('access_token');
-        
+
             if (token) {
-                // Salvar o token no localStorage
+                // Save the token in localStorage
                 localStorage.setItem('pageAccessToken', token);
-        
-                // Definir o token no estado, se necessário
+
+                // Update the state
                 setPageAccessToken(token);
                 console.log('Access Token:', token);
-        
-                // Remover o token da URL
+
+                // Remove the token from the URL
                 window.history.replaceState(null, '', window.location.pathname);
             }
-        
-            // Finalizar o carregamento
+
+            // Finalize loading
             setLoading(false);
         };
-        
 
         extractTokenFromUrl();
     }, []);
@@ -78,7 +76,8 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
     };
 
     const handleLogin = () => {
-        const authUrl = 'https://www.facebook.com/v20.0/dialog/oauth?' +
+        const authUrl =
+            'https://www.facebook.com/v20.0/dialog/oauth?' +
             'response_type=token&' +
             'display=popup&' +
             'client_id=1154848712403630&' +
@@ -86,7 +85,7 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
             'auth_type=rerequest&' +
             'scope=read_insights,catalog_management,ads_management,ads_read,business_management';
 
-        window.open(authUrl, '_Self'); // Abre a URL no mesmo tab
+        window.location.href = authUrl; // Redireciona para a URL de login
     };
 
     return (
@@ -106,38 +105,41 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
                 </Toolbar>
             </AppBar>
 
-            <Container >
+            <Container>
                 {loading ? (
                     <CircularProgress />
-                ) : (
-                    pageAccessToken ? (
-                        <Grid container spacing={4}>
-                            <Grid item xs={12} md={4}>
-                                <CampaignsList onSelect={handleCampaignSelect} pageAccessToken={pageAccessToken} />
-                            </Grid>
-                            <Grid item xs={12} md={8}>
-                                {selectedCampaignId && <InsightsChart campaignId={selectedCampaignId} pageAccessToken={pageAccessToken} />}
-                            </Grid>
+                ) : pageAccessToken ? (
+                    <Grid container spacing={4}>
+                        <Grid item xs={12} md={4}>
+                            <CampaignsList onSelect={handleCampaignSelect} pageAccessToken={pageAccessToken} />
                         </Grid>
-                    ) : (
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'center', // Centraliza horizontalmente
-                                alignItems: 'center',    // Centraliza verticalmente
-                                height: '50vh'
-                            }}
+                        <Grid item xs={12} md={8}>
+                            {selectedCampaignId && (
+                                <InsightsChart
+                                    campaignId={selectedCampaignId}
+                                    pageAccessToken={pageAccessToken}
+                                />
+                            )}
+                        </Grid>
+                    </Grid>
+                ) : (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '50vh',
+                        }}
+                    >
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{ marginTop: '16px', maxWidth: '300px' }}
+                            onClick={handleLogin}
                         >
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                sx={{ marginTop: '16px', maxWidth: '300px' }} // Define um maxWidth para o botão
-                                onClick={handleLogin}
-                            >
-                                Entrar com Facebook
-                            </Button>
-                        </Box>
-                    )
+                            Entrar com Facebook
+                        </Button>
+                    </Box>
                 )}
             </Container>
         </>
