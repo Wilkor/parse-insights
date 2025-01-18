@@ -17,8 +17,10 @@ declare global {
 
 const App: React.FC<AppProps> = ({ eventCaller }) => {
     const [selectedCampaignId, setSelectedCampaignId] = useState<string | null>(null);
-    const [pageAccessToken, setPageAccessToken] = useState<string | null>(null); // Corrigido para null
-    const [profile, setProfile] = useState<any | null>(null);
+    const [pageAccessToken, setPageAccessToken] = useState<string | null>(() => {
+        return localStorage.getItem('pageAccessToken'); // Recupera o token do localStorage
+    });
+        const [profile, setProfile] = useState<any | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -50,12 +52,23 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
             const hash = window.location.hash;
             const params = new URLSearchParams(hash.replace('#', '?'));
             const token = params.get('access_token');
+        
             if (token) {
+                // Salvar o token no localStorage
+                localStorage.setItem('pageAccessToken', token);
+        
+                // Definir o token no estado, se necessário
                 setPageAccessToken(token);
                 console.log('Access Token:', token);
+        
+                // Remover o token da URL
+                window.history.replaceState(null, '', window.location.pathname);
             }
-            setLoading(false); // Set loading to false once the token extraction is done
+        
+            // Finalizar o carregamento
+            setLoading(false);
         };
+        
 
         extractTokenFromUrl();
     }, []);
