@@ -83,7 +83,7 @@ const App: React.FC<AppProps> = ({ eventCaller }) => {
             'client_id=1154848712403630&' +
             'redirect_uri=https://parse-insights-509f01aeb090.herokuapp.com/&' +
             'auth_type=rerequest&' +
-            'scope=read_insights,catalog_management,ads_management,ads_read,business_management';
+            'scope=read_insights,ads_read';
 
         window.location.href = authUrl; // Redireciona para a URL de login
     };
